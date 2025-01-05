@@ -1,0 +1,25 @@
+spring:
+  security:
+    user:
+      name: user
+      password: password
+  datasource:
+    url: jdbc:postgresql://localhost:5432/security
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  jwt:
+    secret: secretdqwqxwqeqwxwqxqwqweqwecxcxwqwqxqxwqdqeqwe
+    expiration: 3600000 #1h
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+      hibernate:
+        sql: DEBUG
