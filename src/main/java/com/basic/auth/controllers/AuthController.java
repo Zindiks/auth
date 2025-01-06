@@ -3,6 +3,8 @@ package com.basic.auth.controllers;
 import com.basic.auth.models.User;
 import com.basic.auth.services.impl.UserServiceImpl;
 import com.basic.auth.web.dto.auth.AuthRequest;
+import com.basic.auth.web.dto.user.UserDto;
+import com.basic.auth.web.mappers.UserMapper;
 import com.basic.auth.web.security.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +39,14 @@ public class AuthController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
+    @Autowired
+    private UserMapper userMapper;
+
+
+
     @PostMapping("/signup")
-    public ResponseEntity<Object> register(@RequestBody @Valid User user, BindingResult bindingResult) {
+    public ResponseEntity<Object> register(@RequestBody @Valid UserDto userDto, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error ->
@@ -47,12 +55,17 @@ public class AuthController {
         }
 
         try {
+            User user = userMapper.toEntity(userDto);
             logger.info("Registering user: " + user);
-            userServiceImpl.create(user);
-            return ResponseEntity.ok("User registered successfully");
+
+            User userResult = userServiceImpl.create(user);
+            return ResponseEntity.ok(userMapper.toDto(userResult));
+
         } catch (Exception e) {
             logger.severe("Error registering user: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user");
+            Map<String, String> errors = new HashMap<>();
+            errors.put("exception", e.getMessage());
+            return ResponseEntity.badRequest().body(errors);
         }
     }
 

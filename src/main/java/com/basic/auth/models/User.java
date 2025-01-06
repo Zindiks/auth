@@ -26,10 +26,9 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Email cannot be blank")
+    @NotBlank(message = "Username cannot be blank")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     private String username;
-
 
     @Column(nullable = false)
     @NotBlank(message = "Password cannot be blank")
