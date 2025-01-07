@@ -1,6 +1,6 @@
 package com.basic.auth.controllers;
 
-import com.basic.auth.models.User;
+import com.basic.auth.models.user.User;
 import com.basic.auth.services.impl.UserServiceImpl;
 import com.basic.auth.web.dto.auth.AuthRequest;
 import com.basic.auth.web.dto.user.UserDto;
@@ -44,8 +44,9 @@ public class AuthController {
 
 
 
+
     @PostMapping("/signup")
-    public ResponseEntity<Object> register(@RequestBody @Valid UserDto userDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> register(@RequestBody @Valid User user, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
@@ -55,11 +56,10 @@ public class AuthController {
         }
 
         try {
-            User user = userMapper.toEntity(userDto);
             logger.info("Registering user: " + user);
 
             User userResult = userServiceImpl.create(user);
-            return ResponseEntity.ok(userMapper.toDto(userResult));
+            return ResponseEntity.ok("Successfully registered user: " + userResult.getUsername());
 
         } catch (Exception e) {
             logger.severe("Error registering user: " + e.getMessage());

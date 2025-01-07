@@ -1,5 +1,4 @@
 package com.basic.auth.web.mappers;
-import org.mapstruct.Mapper;
 
 import java.util.List;
 

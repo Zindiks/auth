@@ -1,6 +1,6 @@
 package com.basic.auth.configs;
 
-import com.basic.auth.models.User;
+import com.basic.auth.models.user.User;
 import com.basic.auth.repositories.UserRepository;
 import com.basic.auth.web.security.AuthEntryPoint;
 import com.basic.auth.web.security.AuthRequestFilter;

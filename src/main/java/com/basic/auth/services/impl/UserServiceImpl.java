@@ -1,5 +1,5 @@
 package com.basic.auth.services.impl;
-import com.basic.auth.models.User;
+import com.basic.auth.models.user.User;
 import com.basic.auth.repositories.UserRepository;
 import com.basic.auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +39,13 @@ public class UserServiceImpl implements UserService {
     public User create(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    @Override
+    public boolean isTaskOwner(Long userId, Long taskId) {
+        return userRepository.findById(taskId)
+                .map(user -> user.getId().equals(userId))
+                .orElse(false);
     }
 
 
